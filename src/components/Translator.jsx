@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Translator() {
+function Translator({ apiKey }) {
   const [text, setText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [language, setLanguage] = useState('en');
@@ -30,7 +30,7 @@ function Translator() {
         setTranslatedText(result);
       } catch (error) {
         console.error('Error translating text:', error);
-        alert('Error translating text');
+        alert(`Error translating text: ${error.message}`);
       }
     } else {
       alert('Translator API is not supported in this browser.');
