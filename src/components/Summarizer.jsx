@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 function Summarizer() {
   const [text, setText] = useState('');
   const [summary, setSummary] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSummarize = async () => {
     if ('ai' in self && 'summarizer' in self.ai) {
+      setIsLoading(true);
       try {
         const summarizerCapabilities = await self.ai.summarizer.capabilities();
         const canSummarize = summarizerCapabilities.available;
@@ -38,6 +40,8 @@ function Summarizer() {
       } catch (error) {
         console.error('Error summarizing text:', error);
         alert('Error summarizing text');
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert('Summarizer API is not supported in this browser.');
@@ -56,6 +60,11 @@ function Summarizer() {
       <button onClick={handleSummarize} className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
         Summarize
       </button>
+      {isLoading && (
+        <div className="loading text-center text-lg font-semibold text-blue-500">
+          Loading...
+        </div>
+      )}
       {summary && (
         <div className="summary">
           <h3 className="text-lg font-semibold">Summary:</h3>
