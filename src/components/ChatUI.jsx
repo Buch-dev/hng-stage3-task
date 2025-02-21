@@ -42,7 +42,7 @@ const ChatUI = () => {
         <textarea
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Type your text here to summarize, should be more than 150 words..."
+          placeholder="Type your text here..."
           className="w-full p-2 border border-gray-300 rounded-md"
         />
         <button onClick={handleSend} className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
