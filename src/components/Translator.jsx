@@ -4,9 +4,11 @@ function Translator({ apiKey }) {
   const [text, setText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [language, setLanguage] = useState('en');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleTranslate = async () => {
     if ('ai' in self && 'translator' in self.ai) {
+      setIsLoading(true);
       try {
         const translatorCapabilities = await self.ai.translator.capabilities();
         const availability = translatorCapabilities.languagePairAvailable('en', language);
@@ -31,6 +33,8 @@ function Translator({ apiKey }) {
       } catch (error) {
         console.error('Error translating text:', error);
         alert(`Error translating text: ${error.message}`);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       alert('Translator API is not supported in this browser.');
@@ -52,13 +56,20 @@ function Translator({ apiKey }) {
         className="w-full p-2 border border-gray-300 rounded-md"
       >
         <option value="en">English</option>
+        <option value="pt">Portuguese</option>
         <option value="es">Spanish</option>
+        <option value="ru">Russian</option>
+        <option value="tr">Turkish</option>
         <option value="fr">French</option>
-        {/* Add more language options as needed */}
       </select>
       <button onClick={handleTranslate} className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
         Translate
       </button>
+      {isLoading && (
+        <div className="loading text-center text-lg font-semibold text-blue-500">
+          Loading...
+        </div>
+      )}
       <div className="translated-text">
         <h3 className="text-lg font-semibold">Translated Text:</h3>
         <p>{translatedText}</p>
